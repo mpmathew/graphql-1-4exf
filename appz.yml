@@ -1,0 +1,30 @@
+app:
+    name: Graphql
+    code: GRAPHQL
+    notify: mpmathew@ecloudcontrol.com
+    
+build:
+    version: 1.4
+    env: DEV
+    build_file: none
+    output_files: output/*.zip
+    image_template: graphql-1.4exf
+
+deploy:
+    context: exf/DEV
+    replicas: 1
+    port:
+    - 4201
+  
+properties:
+    POSTGRES_USER: prefect
+    POSTGRES_DB: prefect_server
+    POSTGRES_SERVICE: postgres-16-2exf-16-x
+    POSTGRES_PASSWORD:
+      vault: POSTGRES_PASSWORD
+    PREFECT_SERVER__HASURA__ADMIN_SECRET: 
+      vault: PREFECT_SERVER__HASURA__ADMIN_SECRET
+    PREFECT_SERVER__DATABASE__CONNECTION_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_SERVICE}:5432/${POSTGRES_DB}
+    GRAPHQL_HOST_PORT: 4201
+    PREFECT_SERVER__HASURA__HOST: hasura-2-3exf-2-38
+    revision : 41
